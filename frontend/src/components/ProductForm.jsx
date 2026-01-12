@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { FaSave, FaTimes, FaEraser } from "react-icons/fa";
 const ProductForm = ({ producto, onSubmit, onCancel }) => {
   const [formData, setFormData] = useState({
     nombre: "",

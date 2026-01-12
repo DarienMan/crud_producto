@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { FaArrowLeft, FaSave } from "react-icons/fa";
+import { FaArrowLeft } from "react-icons/fa";
 import ProductForm from "../components/ProductForm";
 import Toast from "../components/Toast";
 import { createProducto, updateProducto, getProductoById } from "../services/api";
@@ -12,13 +12,7 @@ const CreateProduct = () => {
   const [toast, setToast] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    if (id) {
-      fetchProducto();
-    }
-  }, [id]);
-
-  const fetchProducto = async () => {
+  const fetchProducto = useCallback(async () => {
     setLoading(true);
     try {
       const response = await getProductoById(id);
@@ -29,7 +23,13 @@ const CreateProduct = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [id, navigate]);
+
+  useEffect(() => {
+    if (id) {
+      fetchProducto();
+    }
+  }, [id, fetchProducto]);
 
   const showToast = (message, type = "success") => {
     setToast({ message, type });

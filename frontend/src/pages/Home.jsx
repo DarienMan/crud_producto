@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { Link } from "react-router-dom";
 import { FaPlus, FaSearch, FaTimes } from "react-icons/fa";
 import ProductTable from "../components/ProductTable";
@@ -13,7 +13,7 @@ const Home = () => {
   const [searchNombre, setSearchNombre] = useState("");
   const [searchCategoria, setSearchCategoria] = useState("");
 
-  const fetchProductos = async () => {
+  const fetchProductos = useCallback(async () => {
     setLoading(true);
     try {
       const response = await getProductos({ limit: 1000 });
@@ -24,11 +24,11 @@ const Home = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
 
   useEffect(() => {
     fetchProductos();
-  }, []);
+  }, [fetchProductos]);
 
   useEffect(() => {
     let filtered = productos;
